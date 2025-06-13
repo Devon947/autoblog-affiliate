@@ -1,0 +1,4 @@
+openai
+requests
+schedule
+python-dotenv
