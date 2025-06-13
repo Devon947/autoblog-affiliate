@@ -1,0 +1,32 @@
+name: Auto Blog Post
+
+on:
+  schedule:
+    - cron: '0 8 * * *'
+    - cron: '0 20 * * *'
+  workflow_dispatch:
+
+jobs:
+  run-autoblog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt || true
+
+      - name: Run autoblog
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          BLOGGER_API_KEY: ${{ secrets.BLOGGER_API_KEY }}
+          BLOG_ID: ${{ secrets.BLOG_ID }}
+          AMAZON_TAG: ${{ secrets.AMAZON_TAG }}
+          CLICKBANK_ID: ${{ secrets.CLICKBANK_ID }}
+          POSTS_PER_RUN: 1
+        run: python main.py
